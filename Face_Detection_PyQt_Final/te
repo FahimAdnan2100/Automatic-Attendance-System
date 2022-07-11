@@ -1,0 +1,53 @@
+#self.currentIndexChanged.connect(self.clicker)
+        #self.dept_id = self.comboBox5.currentText()
+        selectquery1 = "select * from depts "
+        cursor.execute(selectquery1)
+        record = cursor.fetchall()
+        self.dept_id = self.comboBox5.currentText()
+        for row in record:
+            self.aa = row[1]
+            if (self.aa == self.dept_id):
+                self.b = row[0]
+                print(self.b)
+                break
+
+        selectbatch = "select * from student_infos"
+        cursor.execute(selectbatch)
+        records = cursor.fetchall()
+        batchs = []
+        # depts.append("Select Department")
+        for row in records:
+            if self.b==row[3]:
+                batch = row[4]
+
+                batchs.append(batch)
+        x= np.array(batchs)
+        y=np.unique(x)
+        print(y)
+        n=0;
+        for i in depts:
+            self.combo1.addItem(depts[n],y)
+            n+=1
+
+        selectcourse = "select * from courses"
+        cursor.execute(selectcourse)
+        records = cursor.fetchall()
+        courses = []
+        # depts.append("Select Department")
+        for row in records:
+            if self.b ==row[1] and self.batch_n == row[2]:
+                course = row[3]
+                courses.append(course)
+        n=0
+        for i in y:
+            self.combo2.addItem(y[n], courses)
+            n+=1
+        self.combo2.activated.connect(self.clicker)
+        self.comboBox2.addItems(courses)
+
+            def clicker(self,index):
+        self.combo2.clear()
+        self.combo2.addItems(self.combo1.itemData(index))
+    def clicker1(self,index):
+        self.combo3.clear()
+        self.combo3.addItems(self.combo2.itemData(index))
