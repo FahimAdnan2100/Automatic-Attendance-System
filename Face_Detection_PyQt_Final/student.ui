@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>510</width>
-    <height>347</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -183,6 +183,50 @@ font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
    </property>
    <property name="text">
     <string>Train</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="runButton_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>330</y>
+     <width>471</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto Condensed Light</family>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 0, 255);</string>
+   </property>
+   <property name="text">
+    <string>Attendance</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="runButton_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>380</y>
+     <width>471</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Roboto Condensed Light</family>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 0, 255);</string>
+   </property>
+   <property name="text">
+    <string>Back</string>
    </property>
   </widget>
  </widget>

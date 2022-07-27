@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtWidgets import QDialog, QMessageBox, QComboBox, QApplication
 from PyQt5.QtTextToSpeech import QTextToSpeech
 from output2 import Ui_OutputDialog2
+from attendanceinfo import Ui_AttendanceDialog
 import cv2
 import face_recognition
 import numpy as np
@@ -17,9 +18,13 @@ import pandas as pd
 import pickle
 
 class Ui_StudentDialog(QDialog):
+
+
+
     def __init__(self):
         super(Ui_StudentDialog, self).__init__()
         loadUi("./student.ui", self)
+        self.runButton_5.clicked.connect(self.runSlot7)
         self.engine = None
 
 
@@ -96,6 +101,9 @@ class Ui_StudentDialog(QDialog):
         print(self.course_no)
         self.runButton_3.clicked.connect(self.train)
         self.runButton_2.clicked.connect(self.runSlot5)
+        self.runButton_4.clicked.connect(self.runSlot6)
+
+        #runButton_4
 
         self._new_window = None
         self.Videocapture_ = None
@@ -209,6 +217,18 @@ class Ui_StudentDialog(QDialog):
         self.outputWindow2_()  # Create and open new output window
         self.close()
         #self.out()
+    def runSlot6(self):
+        print("Clicked Run")
+
+        self.info()
+        self.refreshAll()
+
+
+        self.outputWindow3_()  # Create and open new output window
+        self.close()
+        #self.out()
+
+
     def outputWindow2_(self):
         self._new_window = Ui_OutputDialog2()
         self._new_window.show()
@@ -217,6 +237,27 @@ class Ui_StudentDialog(QDialog):
         print("Video Played")
 
 
+    def outputWindow3_(self):
+        self._new_window = Ui_AttendanceDialog()
+        self._new_window.show()
+        self._new_window.info(self.d,self.b,self.c)
+        print("Attendance Info")
+    def runSlot7(self):
+        print("Clicked Run main")
+
+
+        self.outputWindow9_()  # Create and open new output window
+        self.close()
+        # self.out()
+
+    def outputWindow9_(self):
+        from mainwindow import Ui_Dialog
+        self._new_window = Ui_Dialog()
+
+        self._new_window.show()
+
+
+        print("Video Played")
 
 
 

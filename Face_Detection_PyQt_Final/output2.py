@@ -1,3 +1,5 @@
+from logging import Manager
+
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
@@ -20,12 +22,14 @@ import sys
 import openpyxl
 from string import ascii_uppercase
 
+from PyQt5.uic.properties import QtWidgets
 
 
 class Ui_OutputDialog2(QDialog):
     def __init__(self):
         super(Ui_OutputDialog2, self).__init__()
         loadUi("./outputwindow2.ui", self)
+
         #self.pushButton.clicked.connect(self.absent)
         #self.pushButton_3.clicked.connect(self.attendance)
         self.allatten=[]
@@ -47,6 +51,8 @@ class Ui_OutputDialog2(QDialog):
         self.pre1 = []
         self.image = None
 
+        self.tableWidget.setColumnWidth(1, 200)
+        self.tableWidget.verticalHeader().setVisible(False)
         # speech
         self.engine = None
         engineNames = QTextToSpeech.availableEngines()
@@ -58,7 +64,23 @@ class Ui_OutputDialog2(QDialog):
             self.voices.append(voice)
         self.engine.setVoice(self.voices[0])
 
+        self.pushButton_2.clicked.connect(self.runSlot6)
 
+    def runSlot6(self):
+        print("Clicked Run")
+
+        self.outputWindow3_()
+
+        self.close()
+        # self.out()
+
+    def outputWindow3_(self):
+        from student import Ui_StudentDialog
+        self._new_window = Ui_StudentDialog()
+
+        self._new_window.show()
+
+        print("Video Played")
 
     @pyqtSlot()
     def info(self,dd,bb,cc):
@@ -85,6 +107,12 @@ class Ui_OutputDialog2(QDialog):
         date_time_string11 = datetime.datetime.now().strftime("%I:%M %p")
         self.label_4.setText('TIME :          ' + date_time_string11)
         self.label_3.setText('COURSE :     ' + self.c.upper())
+
+        # attendace show in gui
+        # total student attendance
+
+
+
         path = 'Student Attendance/' + date_time_string_y + '/' + date_time_string_m + '/' + date_time_string1 +'/'+self.d+'/'+self.b+'/'+self.c +'.csv'
         if not os.path.exists(path):
             os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -199,6 +227,8 @@ class Ui_OutputDialog2(QDialog):
         self.k = 1
         self.nn = 1
 
+        self.row2 = 0
+        self.jj1 = 1
 
 
 
@@ -218,12 +248,22 @@ class Ui_OutputDialog2(QDialog):
 
         if self.nn == 1:
             for row in records1:
+                self.tableWidget.setRowCount(self.jj1)
                 qq=1
                 n = row[1]
                 ii=row[2]
                 t = row[9]
                 ss =str(self.k)+'. '+ii+' '+ n +'  Login at ' + t
-                self.listWidget.addItem(ss)
+
+
+                self.tableWidget.setItem(self.row2, 0, QTableWidgetItem(str(self.k)))
+                self.tableWidget.setItem(self.row2, 1, QTableWidgetItem(str(row[1])))
+                self.tableWidget.setItem(self.row2, 2, QTableWidgetItem(str(row[2])))
+                self.tableWidget.setItem(self.row2, 3, QTableWidgetItem(str(row[9])))
+                self.row2 = self.row2 + 1
+                self.jj1 = self.jj1 + 1
+
+
                 #self.listWidget.setForeground(Qt.red)
                 self.k = self.k + 1
                 qq+=1
@@ -248,6 +288,9 @@ class Ui_OutputDialog2(QDialog):
                     pass
 
             k = open(path2, 'r+')
+
+
+
             #si = self.allatten.count();
             k.writelines(self.cours)
             k.writelines(self.ddt)
@@ -256,6 +299,15 @@ class Ui_OutputDialog2(QDialog):
             k.writelines(self.tabs)
             k.writelines(self.header)
             k.writelines(self.allatten1)
+
+            # attendace show in gui
+            # total student attendance
+            ats = str(self.ts[0])
+            print(ats)
+            xatx = ats.split(', ')
+            self.label_5.setText( str(xatx[0]))
+            self.label_6.setText( str(self.tatt[0]))
+            self.label_7.setText(str(self.tabs[0]))
 
             for i in range(len(self.allatten)):
                 n=self.allatten[i]
@@ -397,6 +449,8 @@ class Ui_OutputDialog2(QDialog):
             self.tabs.append(tabb)
             self.ts.append(sst)
 
+
+
             attendance(self)
         def mark_attendance1(name,id):
             path = 'Student Attendance/' + date_time_string_y + '/' + date_time_string_m + '/' + date_time_string1 + '/' + self.d + '/' + self.b + '/' + self.c + '.csv'
@@ -409,13 +463,15 @@ class Ui_OutputDialog2(QDialog):
                     timeList=[]
 
 
+
                     for line in StudentAttendanceList:
+
                         entry = line.split(',')
                         nameList.append(entry[0])
 
                         #timeList.append(entry[0])
                     if name not in nameList:
-
+                        self.tableWidget.setRowCount(self.jj1)
                         self.ll_n.append(name)
                         self.ll_d.append(date_time_string)
                         sayn=name+' Clocked In at '+date_time_string
@@ -441,7 +497,18 @@ class Ui_OutputDialog2(QDialog):
                         self.ddt.append(dat)
 
                         self.allatten1.sort()
-                        self.listWidget.addItem(det)
+                        #list widget Add attendance
+                        for qw in range(0,self.jj1):
+                            self.tableWidget.setItem(self.row2, 0, QTableWidgetItem(str(self.jj1)))
+                            self.tableWidget.setItem(self.row2, 1, QTableWidgetItem(str(name)))
+                            self.tableWidget.setItem(self.row2, 2, QTableWidgetItem(str(id)))
+                            self.tableWidget.setItem(self.row2, 3, QTableWidgetItem(str(date_time_string)))
+                            self.row2 = self.row2 + 1
+                            self.jj1=self.jj1 + 1
+
+
+
+
                         self.k=self.k+1
 
                         #database
@@ -519,3 +586,8 @@ class Ui_OutputDialog2(QDialog):
             self.imgLabel5.setPixmap(QPixmap.fromImage(outImage))
             self.imgLabel5.setScaledContents(True)
 
+if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    manager = Manager()
+    sys.exit(app.exec_())
